@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  api:
+    container_name: whoami-api
+    image: sreevardhanreddi/whoami-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: --reload
+    ports:
+      - 8001:8000
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+    environment:
+      - DEBUG=1
+    restart: always
