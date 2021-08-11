@@ -9,7 +9,7 @@ app = FastAPI()
 
 
 @app.get("/info", status_code=status.HTTP_200_OK)
-def read_root():
+async def read_root():
     return {
         "Hello": "World",
         "message": "go to '/' , '/health' and '/error' endpoints to discover more.",
@@ -17,7 +17,7 @@ def read_root():
 
 
 @app.get("/", status_code=status.HTTP_200_OK)
-def info(request: Request):
+async def info(request: Request):
     res = {
         "hostname": socket.gethostname(),
         "ip": socket.gethostbyname(socket.gethostname()),
@@ -33,17 +33,18 @@ def info(request: Request):
     res = {
         **res,
         **headers,
+        "environment": dict(os.environ),
     }
     return res
 
 
 @app.get("/health", status_code=status.HTTP_200_OK)
-def health():
+async def health():
     return {"health": "OK"}
 
 
 @app.get("/error", status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
-def error():
+async def error():
     raise Exception("error endpoint check logs ...")
 
 
